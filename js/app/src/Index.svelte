@@ -60,6 +60,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { client, SpaceStatus } from "@gradio/client";
+	import { wasmClient } from "@gradio/wasm";
 
 	import Embed from "./Embed.svelte";
 	import type { ThemeMode } from "./components/types";
@@ -196,6 +197,8 @@
 
 		app = await client(api_url, handle_status);
 		config = app.config;
+
+		wasmClient();
 
 		status = {
 			message: "",
