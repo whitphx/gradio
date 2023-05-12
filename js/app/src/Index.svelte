@@ -62,6 +62,14 @@
 	import { client, SpaceStatus } from "@gradio/client";
 	import { wasmClient } from "@gradio/wasm";
 
+	// TODO: Make sure the wheel has been built.
+	// @ts-ignore
+	import gradioWheel from "../../../dist/gradio-3.29.0-py3-none-any.whl";
+	// @ts-ignore
+	import gradioClientWheel from "../../../client/python/dist/gradio_client-0.2.3-py3-none-any.whl";
+	const gradioWheelUrl = gradioWheel as unknown as string;
+	const gradioClientWheelUrl = gradioClientWheel as unknown as string;
+
 	import Embed from "./Embed.svelte";
 	import type { ThemeMode } from "./components/types";
 	import { Component as Loader } from "./components/StatusTracker";
@@ -198,7 +206,7 @@
 		app = await client(api_url, handle_status);
 		config = app.config;
 
-		wasmClient();
+		wasmClient({ gradioWheelUrl, gradioClientWheelUrl });
 
 		status = {
 			message: "",

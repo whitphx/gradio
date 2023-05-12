@@ -119,6 +119,7 @@ export default defineConfig(({ mode }) => {
 			environment: "happy-dom",
 			include: ["**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
 			globals: true
-		}
+		},
+		assetsInclude: ["**/*.whl"] // To pass URLs of built wheel files to the Wasm worker.
 	};
 });
