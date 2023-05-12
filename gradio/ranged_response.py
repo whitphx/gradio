@@ -9,7 +9,7 @@ from typing import NamedTuple
 from urllib.parse import quote
 
 import aiofiles
-from aiofiles.os import stat as aio_stat
+# from aiofiles.os import stat as aio_stat
 from starlette.datastructures import Headers
 from starlette.exceptions import HTTPException
 from starlette.responses import Response, guess_type
