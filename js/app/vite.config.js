@@ -123,6 +123,7 @@ export default defineConfig(({ mode }) => {
 					? ["**/*.node-test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"]
 					: ["**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
 			globals: true
-		}
+		},
+		assetsInclude: ["**/*.whl"] // To pass a built wheel file URL to the Wasm worker.
 	};
 });
