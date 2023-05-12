@@ -48,7 +48,7 @@ from pygments.lexers import get_lexer_by_name
 
 import gradio
 from gradio.context import Context
-from gradio.strings import en
+# from gradio.strings import en
 
 if TYPE_CHECKING:  # Only import for type checking (is False at runtime).
     from gradio.blocks import Block, BlockContext
