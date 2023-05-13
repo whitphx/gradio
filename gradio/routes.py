@@ -41,7 +41,7 @@ from starlette.websockets import WebSocketState
 
 import gradio
 import gradio.ranged_response as ranged_response
-from gradio import utils
+from gradio import utils, wasm_utils
 from gradio.context import Context
 from gradio.data_classes import PredictBody, ResetBody
 from gradio.exceptions import Error
@@ -59,16 +59,21 @@ with open(VERSION_FILE) as version_file:
     VERSION = version_file.read()
 
 
-class ORJSONResponse(JSONResponse):
-    media_type = "application/json"
+if wasm_utils.is_wasm:
+    # TODO: We can't use orjson in the browser, so we need to implement an alternative.
+    #       At this moment, we use JSONResponse, which may not work in some cases.
+    ORJSONResponse = JSONResponse
+else:
+    class ORJSONResponse(JSONResponse):
+        media_type = "application/json"
 
-    @staticmethod
-    def _render(content: Any) -> bytes:
-        return orjson.dumps(
-            content,
-            option=orjson.OPT_SERIALIZE_NUMPY | orjson.OPT_PASSTHROUGH_DATETIME,
-            default=str,
-        )
+        @staticmethod
+        def _render(content: Any) -> bytes:
+            return orjson.dumps(
+                content,
+                option=orjson.OPT_SERIALIZE_NUMPY | orjson.OPT_PASSTHROUGH_DATETIME,
+                default=str,
+            )
 
     def render(self, content: Any) -> bytes:
         return ORJSONResponse._render(content)
@@ -145,12 +150,13 @@ class App(FastAPI):
         app = App(default_response_class=ORJSONResponse)
         app.configure_app(blocks)
 
-        app.add_middleware(
-            CORSMiddleware,
-            allow_origins=["*"],
-            allow_methods=["*"],
-            allow_headers=["*"],
-        )
+        if not wasm_utils.is_wasm:
+            app.add_middleware(
+                CORSMiddleware,
+                allow_origins=["*"],
+                allow_methods=["*"],
+                allow_headers=["*"],
+            )
 
         @app.get("/user")
         @app.get("/user/")

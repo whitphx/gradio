@@ -1747,6 +1747,7 @@ Received outputs:
                 from gradio.routes import App
 
                 app = App.create_app(self)
+                wasm_utils.register_app(app)
             else:
                 server_name, server_port, local_url, app, server = networking.start_server(
                     self,
