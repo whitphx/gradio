@@ -15,3 +15,4 @@
 **/.mypy_cache/**
 **/*.md
 **/wasm/dist/**
+**/lite/dist/**
